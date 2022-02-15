@@ -1,0 +1,10 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 12px;
+}
+
+.upload {
+    grid-column: 1 / 13;
+    min-height: calc(100vh - 140px);
+}

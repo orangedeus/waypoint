@@ -1,0 +1,81 @@
+
+.container {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+
+    cursor: pointer;
+
+    position: fixed;
+
+    top: 130px;
+    left: 16px;
+    z-index: 999999999;
+
+    box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.16);
+}
+
+.image {
+    background-image: url('../../../../assets/settings.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70%;
+
+    border-radius: 30px;
+    box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.16);
+    width: 60px;
+    height: 60px;
+
+    transform-origin: center;
+    transition: 0.2s ease-in-out;
+}
+
+.dropdown {
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    opacity: 0;
+    visibility: hidden;
+    box-shadow: 0px -2px 11px rgba(0, 0, 0, 0.16);
+    max-height: 0px;
+
+    transition: 0.5s ease-out;
+    overflow: hidden;
+    width: 120%;
+
+    border-radius: 8px;
+    padding: 8px 0px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.arrow {
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: calc(120% - 8px);
+    left: 50%;
+    z-index: 2;
+    border-left: solid 10px transparent;
+    border-right: solid 10px transparent;
+    border-bottom: solid 10px white;
+    transform: translateX(-50%);
+}
+
+.container:hover {
+
+    .image {
+        transform: scale(1.1) rotate(180deg);
+    }
+
+    .dropdown {
+        opacity: 1;
+        visibility: visible;
+        max-height: 100vh;
+    }
+}

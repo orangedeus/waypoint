@@ -1,0 +1,91 @@
+.container {
+    position: relative;
+    height: calc(100vh - 118.4px);
+    padding: 0 56px 0 56px;
+}
+
+.image {
+    background-image: url('../../../assets/map-texture.svg');
+    width: 600px;
+    height: 500px;
+
+    background-position: right;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-blend-mode: lighten;
+    background-attachment:initial;
+
+    position: absolute;
+
+    top: 50%;
+    right: 56px;
+    z-index: -1;
+    transform: translateY(-50%);
+    overflow: hidden;
+
+    opacity: 0.5;
+}
+
+.marker {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 53.15%;
+    height: 22.457%;
+
+    //transform: translate(-12px, 280px);
+
+    animation: marker 20s cubic-bezier(0.075, 0.82, 0.165, 1) infinite;
+}
+
+@media only screen and (min-width: 1920px) {
+    .marker {
+        height: 230px;
+    }
+}
+
+@keyframes marker {
+    0% {
+        transform: translate(205px, 120px);
+    }
+
+    10% {
+        transform: translate(167px, 60px);
+    }
+
+    20% {
+        transform: translate(96px, 102px);
+    }
+
+    30% {
+        transform: translate(34.5px, 141px);
+    }
+
+    40% {
+        transform: translate(106px, 203px);
+    }
+
+    50% {
+        transform: translate(-12px, 280px);
+    }
+
+    60% {
+        transform: translate(62.5px, 337px);
+    }
+
+    70% {
+        transform: translate(165px, 235px);
+    }
+
+    80% {
+        transform: translate(194px, 208px);
+    }
+
+    90% {
+        transform: translate(150px, 164px);
+    }
+
+    100% {
+        transform: translate(205px, 120px);
+    }
+}

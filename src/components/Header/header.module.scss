@@ -1,0 +1,19 @@
+@import 'src/styles/common.scss';
+
+.container {
+    position: sticky;
+    top: 0;
+    left: 0;
+
+    margin-top: 20px;
+    padding: 9px 56px 9px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-flow: row wrap;
+    background-color: white;
+
+    overflow: visible;
+
+    z-index: 999999;
+}

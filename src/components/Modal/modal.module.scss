@@ -1,0 +1,26 @@
+.container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    animation: appear 0.3s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.479);
+    z-index: 999999;
+}
+
+.blanket {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(25, 25, 25, 0.315);
+    opacity: 0;
+    animation: appear 0.3s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    z-index: 10;
+}
+
+@keyframes appear {
+    100% {
+        opacity: 1;
+    }
+}

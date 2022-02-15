@@ -1,0 +1,85 @@
+.container {
+
+    width: 250px;
+    height: auto;
+
+    cursor: pointer;
+    overflow: visible;
+}
+
+svg {
+    overflow: visible;
+}
+
+.tittle {
+    animation: none;
+    transition: 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.logoTittle {
+    animation: tittle 6s cubic-bezier(0.075, 0.82, 0.165, 1) infinite;
+
+    path {
+        animation: path 6s cubic-bezier(0.075, 0.82, 0.165, 1) infinite;
+    }
+}
+
+@keyframes tittle {
+    20% {
+        transform: translateX(-10%);
+    }
+
+    40% {
+        transform: translateX(-22.5%);
+    }
+
+    42.5% {
+        transform: translate(-22.5%, -10%);
+    }
+
+    45% {
+        transform: translate(-22.5%, 0);
+    }
+
+    47.5% {
+        transform: translate(-22.5%, -10%);
+    }
+
+    50% {
+        transform: translate(-22.5%, 0);
+    }
+
+    60% {
+        transform: translateX(-22.5%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes path {
+    20% {
+        fill: #bdf2ff;
+    }
+
+    40% {
+        fill: #ffb347;
+    }
+
+    45% {
+        fill: #ff6961;
+    }
+
+    50% {
+        fill: #fdfd96;
+    }
+
+    60% {
+        fill: #fdfd96;
+    }
+
+    100% {
+        fill: #62A2CC;
+    }
+}

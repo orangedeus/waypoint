@@ -1,0 +1,34 @@
+@import 'src/styles/common.scss';
+
+.container {
+    position: relative;
+
+    input {
+        width: 100%;
+        padding: 16px 12px;
+        height: 56px;
+
+        border: solid 1px black;
+        border-radius: 8px;
+        font-family: $content2-font-family;
+        font-size: 24px;
+        outline: none;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    input:focus {
+        border: solid 3px $theme-color;
+    }
+
+    label {
+        position: absolute;
+        top: 0px;
+        left: 8px;
+        background-color: white;
+        font-size: 14px;
+        font-family: $content-font-family;
+        transform: translateY(-50%);
+        padding: 0px 4px;
+    }
+}

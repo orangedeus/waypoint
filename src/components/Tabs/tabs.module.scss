@@ -1,0 +1,50 @@
+@import 'src/styles/common.scss';
+
+.container {
+    background: transparent;
+    height: 200px;
+}
+
+.tabButton {
+    padding: 9px;
+    margin: 0 9px 0 9px;
+    cursor: pointer;
+
+    font-family: $content-font-family;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #eee;
+}
+
+.activeTab {
+    background-color: white;
+}
+
+.tabButtonsContainer {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.tabPanel {
+    margin: 0;
+    width: calc(100% - 48px);
+    font-family: $content-font-family;
+    font-size: 24px;
+    padding: 24px;
+    height: 100%;
+}
+
+.tabPanelsCamera {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    transition: 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.tabPanelsContainer {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    overflow: hidden;
+}

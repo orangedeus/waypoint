@@ -1,0 +1,36 @@
+@import 'src/styles/common.scss';
+
+.container {
+    height: 140px;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    background-color: #3d426b;
+}
+
+.divider {
+    border: solid 2px white;
+    border-radius: 5px;
+    width: 0;
+    height: 50%;
+}
+
+.logosContainer {
+    display: flex;
+    flex-flow: row wrap;
+    height: 100px;
+    width: 500px;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        height: 50px;
+        margin: 1rem;
+    }
+}
+
+.copyright {
+    color: white;
+    font-family: $content-font-family;
+    font-size: 20px;
+}

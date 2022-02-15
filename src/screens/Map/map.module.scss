@@ -1,0 +1,77 @@
+@import "src/styles/common.scss";
+
+.container {
+    min-height: calc(100vh - 118.4px);
+}
+
+.map {
+    height: calc(100vh - 118.4px);
+    z-index: 0;
+}
+
+.dot {
+    height: 13px;
+    width: 13px;
+    margin: 0px 2px 0px 2px;
+    border-radius: 50%;
+    display:inline-block;
+}
+
+.legend {
+    padding: 1rem;
+    width: 400px;
+    background-color: white;
+    margin: 1rem;
+
+    cursor: pointer;
+
+    border-radius: 15px;
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    z-index: 100000000;
+
+    transition: 0.3s cubic-bezier(0.215, 0.610, 0.355, 1);
+
+    strong {
+        font-size: 20px;
+    }
+
+    label {
+        font-size: 16px;
+        font-family: $content2-font-family;
+    }
+}
+
+.legendCollapse {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.select {
+    width: 80%;
+    font-size: 16px;
+    font-family: $content2-font-family;
+    padding: 0.5rem 0 0.5rem 0;
+    z-index: 999999;
+    pointer-events: visible;
+    position: absolute;
+}
+
+.arrow {
+    display: inline-block;
+    background-image: url('../../assets/arrow.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 80%;
+    width: 80%;
+    cursor: pointer;
+}

@@ -1,0 +1,33 @@
+@import 'src/styles/common.scss';
+
+.container {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+ul {
+    padding-left: 0;
+    display: flex;
+    flex-flow: row wrap;
+
+    list-style-type: none;
+}
+
+li {
+    padding: 9px;
+    font-family: $content-font-family;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.activeLink {
+    border-bottom: solid 5px rgb(198, 247, 20);
+}

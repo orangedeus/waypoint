@@ -1,0 +1,191 @@
+@import 'src/styles/common.scss';
+
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+}
+
+.dropzone {
+    border: dashed 2px $theme-color;
+    border-radius: 20px;
+    width: 40%;
+    height: 100%;
+    ul {
+        display: flex;
+        flex-direction: column;
+        padding-left: 24px;
+
+        list-style-type: circle;
+
+        li {
+            font-size: 16px;
+        }
+    }
+}
+
+.uploadInterface {
+    margin-left: 24px;
+    width: 60%;
+}
+
+
+.uploadControl {
+    display: flex;
+    justify-content: space-around;
+    
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.uploadControl:hover {
+    background-color: #e6e6e6;
+}
+
+.button {
+    border:none;
+    outline: none;
+    padding: 8px 16px;
+    background-color: $theme-color;
+    border-radius: 24px;
+
+    color: white;
+    font-family: $content-font-family;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.button:disabled {
+    background-color: #ccc;
+}
+
+.forChecked {
+    background-color: #ccc;
+    color: #666;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    font-family: $content-font-family;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+}
+
+.arrow {
+    display: inline-block;
+    border: none;
+    border-left: solid 3px #666;
+    border-top: solid 3px #666;
+
+    min-width: 12px;
+    min-height: 12px;
+    max-width: 12px;
+    max-height: 12px;
+
+    transition: 0.2s ease-in-out;
+}
+
+.arrowDown {
+    @extend .arrow;
+    transform: rotate(225deg);
+}
+
+.arrowRight {
+    @extend .arrow;
+    transform: rotate(135deg);
+}
+
+.dropdownContent {
+    padding: 8px;
+    position: absolute;
+    top: 100%;
+    right: 0px;
+    width: 350px;
+}
+
+.creatable {
+    margin: 4px 0px;
+    color: black;
+    div {
+        color: black;
+    }
+}
+
+
+.select {
+    margin: 4px 0px;
+    min-width: 200px;
+    color: black;
+    div {
+        color: black;
+    }
+}
+
+.uploadDisplay {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 12px;
+    row-gap: 12px;
+    height: 400px;
+    overflow: scroll;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    p {
+        text-align: center;
+        font-family: $content-font-family;
+        font-size: 14px;
+    }
+}
+
+.singleFileUpload {
+    position: relative;
+    padding: 12px;
+    border-radius: 8px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 300px;
+
+    img {
+        width: 150px;
+    }
+
+    border: solid 1px #e3e3e3;
+}
+
+.uploadLabel {
+    font-family: $content-font-family;
+}
+
+.close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.noFiles {
+    grid-column: 1 / 4;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #aaa;
+}

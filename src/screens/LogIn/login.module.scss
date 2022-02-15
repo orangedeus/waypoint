@@ -1,0 +1,58 @@
+@import 'src/styles/common.scss';
+
+.container {
+    background-color: white;
+    border-radius: 8px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 400px;
+    height: 300px;
+}
+
+.form {
+    display: flex;
+    flex-direction: row;
+    width: 300px;
+    justify-content: space-between;
+}
+
+.loginBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 56px;
+    width: 56px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.label {
+    background-color: $theme-color;
+    border-radius: 8px;
+    color: white;
+    font-family: $content-font-family;
+
+    display: flex;
+
+    font-size: 24px;
+
+    img {
+        width: 32px;
+        height: auto;
+    }
+
+    padding: 12px 24px;
+
+    position: absolute;
+    top: -24px;
+    right: 24px;
+}
+
+.codeInput {
+    width: 78%;
+}

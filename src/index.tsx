@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import './index.scss';
+import Index from './screens';
 import reportWebVitals from './reportWebVitals';
+import {
+  RecoilRoot
+} from 'recoil'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <RecoilRoot>
+      <Index />
+    </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')
 );

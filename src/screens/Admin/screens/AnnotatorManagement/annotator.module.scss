@@ -1,0 +1,93 @@
+@import 'src/styles/common.scss';
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 12px;
+    z-index: 1;
+}
+
+.generate {
+    height: calc(100vh - 145px);
+    grid-column: 1 / 6;
+}
+
+.generated {
+    height: calc(100vh - 145px);
+    grid-column: 6 / 13;
+}
+
+.codesContainer {
+    display: flex;
+    flex-flow: column wrap;
+    height: 400px;
+    overflow: hidden;
+}
+
+.codesPlaceholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    color: #777;
+    font-family: $content2-font-family;
+    font-size: 24px;
+}
+
+.code {
+    padding: 8px 16px;
+    font-family: $content2-font-family;
+    font-size: 16px;
+    width: fit-content;
+}
+
+.code:hover {
+    background-color: #e6e6e6;
+}
+
+.numberInput {
+    margin-top: 24px;
+    width: 300px;
+}
+
+.form {
+    margin-top: 24px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.select {
+    width: 300px;
+    margin-top: 24px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.submit {
+    margin-top: 42px;
+    background-color: $theme-color;
+    font-family: $content-font-family;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 8px 24px;
+    border: none;
+    border-radius: 40px;
+
+    cursor: pointer;
+    transition: 0.2s ease-in;
+    outline: none;
+}
+
+.submit:hover {
+    background-color: #366b8f;
+}
+
+.submitFail {
+    background-color: red;
+}

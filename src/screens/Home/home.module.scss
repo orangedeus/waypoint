@@ -1,0 +1,69 @@
+@import 'src/styles/common.scss';
+
+.bannerContent {
+    width: 45%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.bannerHeader {
+    font-size: 6rem;
+    font-family: $header-font-family;
+    font-weight: bold;
+    line-height: 100%;
+
+    u {
+        text-decoration-color: rgb(198, 247, 20);
+        text-decoration-thickness: 0.75rem;
+    }
+}
+
+.bannerText {
+    margin-top: 50px;
+    font-size: 1.5rem;
+    font-family: $content-font-family;
+
+    span {
+        font-weight: bold;
+    }
+}
+
+.banner2Content {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner2Header {
+    font-family: $header-font-family;
+    font-size: 6rem;
+    font-weight: bold;
+    width: fit-content;
+
+    color: white;
+}
+
+.banner2Text {
+    margin-top: 56px;
+    font-family: $content-font-family;
+    font-size: 2rem;
+    color: white;
+    width: 900px;
+    text-align: justify;
+}
+
+.tabs {
+    margin-top: 56px;
+    margin-bottom: 56px;
+    height: 200px;
+    width: 900px;
+}
+
+@media only screen and (max-width: 1367px) {
+    .bannerHeader {
+        font-size: 5.25rem;
+    }
+}
