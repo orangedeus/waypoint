@@ -29,5 +29,16 @@ a {
 }
 
 .activeLink {
-    border-bottom: solid 5px rgb(198, 247, 20);
+    position: relative;
+}
+
+.activeLink:after {
+    content: "";
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background-color: rgb(198, 247, 20);
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
 }

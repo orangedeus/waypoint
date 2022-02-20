@@ -148,38 +148,6 @@
     }
 }
 
-.singleFileUpload {
-    position: relative;
-    padding: 12px;
-    border-radius: 8px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 300px;
-
-    img {
-        width: 150px;
-    }
-
-    border: solid 1px #e3e3e3;
-}
-
-.uploadLabel {
-    font-family: $content-font-family;
-}
-
-.close {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
-
 .noFiles {
     grid-column: 1 / 4;
     height: 100%;

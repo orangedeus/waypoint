@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const BACKEND_API = process.env.REACT_APP_BACKEND_API || ""
-const PROCESSING_API = process.env.REACT_APP_PROCESSING_API || ""
+import {BACKEND_API} from './endpoints'
 
 export type FilterType = {
     people: boolean
@@ -21,12 +20,6 @@ async function getFilteredStops(route: string, filter: FilterType) {
     return response.data
 }
 
-async function getRoutes() {
-    const response = await axios.get(`${BACKEND_API}/routes`)
-    return response.data
-}
-
 export const service = {
-    getFilteredStops,
-    getRoutes
+    getFilteredStops
 }

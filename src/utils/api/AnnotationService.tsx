@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { AnnotationMeta } from '../../types/Annotation';
 
-const BACKEND_API = process.env.REACT_APP_BACKEND_API || ""
-const PROCESSING_API = process.env.REACT_APP_PROCESSING_API || ""
+import {BACKEND_API} from './endpoints'
 
 async function getStopsForAnnotation(code: string) {
     const req = {

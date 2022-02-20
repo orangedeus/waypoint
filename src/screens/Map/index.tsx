@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import s from "./map.module.scss"
 import { FilterType, service } from "../../utils/api/MapService"
 
+import { getRoutesOptions, getBatchOptions } from "../../utils/api"
+
 import Select, { SingleValue } from "react-select"
 import {
     MapContainer,
@@ -120,7 +122,7 @@ const Map = () => {
     }, [markers])
 
     const handleSelectOpen = () => {
-        service.getRoutes().then((data) => {
+        getRoutesOptions().then((data) => {
             setRoutes([{value: 0, label: 'All'}].concat(data))
         })
     }

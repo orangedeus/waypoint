@@ -4,6 +4,7 @@
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     column-gap: 12px;
+    row-gap: 12px;
     z-index: 1;
 }
 
@@ -15,6 +16,79 @@
 .generated {
     height: calc(100vh - 145px);
     grid-column: 6 / 13;
+}
+
+.management {
+    height: calc(100vh - 145px);
+    grid-column: 1 / 8;
+
+    overflow: scroll;
+    scrollbar-width: none;
+}
+
+.management::-webkit-scrollbar {
+    display: none;
+}
+
+.table {
+    width: 100%;
+    border: solid 1px #e6e6e6;
+    border-collapse: collapse;
+
+    thead {
+        background-color: $theme-color;
+        tr {
+            border-top-right-radius: 8px;
+            border-top-left-radius: 8px;
+            th {
+                border-top-right-radius: 8px;
+                border-top-left-radius: 8px;
+                height: 48px;
+                font-size: 20px;
+                font-family: $content-font-family;
+                text-align: center;
+                color: white;
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            height: 36px;
+
+            td {
+                font-family: $content2-font-family;
+                text-align: center;
+            }
+
+            &:nth-child(even) {
+                background-color: #f1f1f1;
+            }
+        }
+    }
+}
+
+.histogram {
+    height: calc(100vh - 145px);
+    grid-column: 8 / 13;
+}
+
+.histogramContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+    .histogramSelect {
+        width: 400px;
+        margin: 6px 0px;
+        font-size: 20px;
+        text-align: center;
+    }
+    .lastSelect {
+        margin-bottom: 81px;
+    }
 }
 
 .codesContainer {
