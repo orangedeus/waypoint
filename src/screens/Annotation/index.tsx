@@ -11,6 +11,7 @@ import { useRecoilState } from 'recoil'
 import InputBox from '../../components/InputBox'
 import { Stops } from '../../types/Stops'
 import { authState } from '../../stores/auth'
+import Landing from './Landing'
 
 type Video = {
     url: string
@@ -35,7 +36,7 @@ const Annotation = (): JSX.Element => {
     const [boarding, setBoarding] = useState<string | undefined>()
     const [alighting, setAlighting] = useState<string | undefined>()
 
-    const [{ code, admin },] = useRecoilState(authState)
+    const [{ code, admin, surveyed },] = useRecoilState(authState)
 
     const [videos, setVideos] = useState<Video[]>([])
 
@@ -188,7 +189,9 @@ const Annotation = (): JSX.Element => {
     }
 
     return (
-        <div className={s.container}>
+        <>
+            {(!admin && !surveyed) && <Landing />}
+            <div className={s.container}>
             <div className={s.videosContainer}>
                 {videos.length && <Flicking
                     ref={flickingRef}
@@ -254,6 +257,7 @@ const Annotation = (): JSX.Element => {
                 </div>
             </div>
         </div>
+        </>
     )
 }
 

@@ -229,7 +229,7 @@ const SingleFileUpload = ({file: fileProp, checked: checkedProp, status: statusP
         if (status == 'processing') {
             return (
                 <div className="UploadingStatusDisplay">
-                    <div className="Loader" />
+                    <Loader />
                     <p className="UploadLabel">Processing... {status2}</p>
                 </div>
             )

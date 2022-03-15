@@ -1,4 +1,5 @@
 import React, {DetailedHTMLProps, TableHTMLAttributes} from 'react'
+import s from './table.module.scss'
 
 type Column<T> = {
     key: keyof T
@@ -12,7 +13,7 @@ type TableProps<T> = {
 
 const Table = <T,>({columns, data, ...props}: TableProps<T>): JSX.Element => {
     return <table {...props}>
-        <thead>
+        <thead className={s.thead}>
             <tr>
                 {columns.map((column) =>
                     <th key={String(column.key)}>{String(column.key).charAt(0).toUpperCase() + String(column.key).slice(1)}</th>

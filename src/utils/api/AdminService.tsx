@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { DashboardStats } from '../../types/Admin'
+import { DashboardStats, FileStops } from '../../types/Admin'
 
 import {BACKEND_API} from './endpoints'
 
@@ -34,4 +34,33 @@ async function getHistogramData(route: string, batch: number | string) {
     return response.data
 }
 
-export const service = { getDashboardStats, getCodesInstrumentation, getHistogramData, postGenerateCodes }
+async function getTrackingData(route: string, batch: string | number) {
+    const response = await axios.get(`${BACKEND_API}/process/tracking?route=${route}&batch=${batch}`)
+
+    return response.data
+} 
+
+async function getFileData(filename: string, route: string, batch: number | string): Promise<FileStops[]> {
+    const response =  await axios.get(`${BACKEND_API}/stops/file/${filename}/?route=${route}&batch=${batch}`)
+
+    return response.data
+}
+
+async function getCSVData(src: string) {
+    const response = await axios.get(src)
+
+    return response.data
+}
+
+async function postRetirement(route: string, batch: number) {
+    const req = {
+        route: route,
+        batch: batch
+    }
+
+    const response = await axios.post(`${BACKEND_API}/batch/retire`, req)
+
+    return response.data
+}
+
+export const service = { getDashboardStats, getCodesInstrumentation, getHistogramData, getTrackingData, getFileData, postGenerateCodes, postRetirement, getCSVData }

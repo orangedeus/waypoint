@@ -1,0 +1,104 @@
+@import 'src/styles/common.scss';
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 12px;
+    row-gap: 12px;
+}
+
+.batchControl {
+    grid-column: 1 / 13;
+    height: 220px;
+}
+
+.selectContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 8px;
+    padding: 8px;
+}
+
+.select {
+    min-width: 200px;
+    width: 50%;
+}
+
+.buttonContainer {
+    display: flex;
+    padding: 4px;
+    column-gap: 8px;
+    justify-content: center;
+}
+
+.button {
+    background-color: $theme-color;
+    padding: 8px 24px;
+    font-family: $content-font-family;
+    font-size: 20px;
+    color: white;
+    width: fit-content;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+}
+
+.tooltip {
+    width: 350px;
+    color: black;
+    font-size: 14px;
+    padding: 8px;
+}
+
+.backupForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 12px;
+}
+
+.backup {
+    grid-column: 1 / 5;
+    height: 240px;
+}
+
+.backupEnter {
+    margin-top: 24px;
+}
+
+.backupControl {
+    grid-column: 5 / 13;
+    height: 240px;
+}
+
+.backupSelect {
+    width: 80%;
+    margin-top: 24px;
+}
+
+.buttonsContainer {
+    margin-top: 12px;
+    display: flex;
+    column-gap: 6px;
+    justify-content: center;
+}
+
+.nukes {
+    grid-column: 1 / 13;
+    height: 300px;
+}
+
+.nukesContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+    .tooltip {
+        width: 200px;
+        text-align: center;
+    }
+}

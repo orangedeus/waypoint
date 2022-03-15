@@ -5,7 +5,7 @@ import cx from 'classnames'
 
 interface CardProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     children?: ReactNode
-    header?: string
+    header?: ReactNode | JSX.Element
     className?: string
 }
 
