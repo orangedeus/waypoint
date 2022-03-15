@@ -1,0 +1,56 @@
+.container {
+    display: inline;
+    margin: 4px;
+    position: relative;
+}
+
+.tooltip {
+    position: absolute;
+    top: calc(100% + 12px);
+    background-color: white;
+    box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.4s ease-in-out;
+    z-index: 1;
+    border-radius: 8px;
+    color: black;
+}
+
+.tail {
+    width: 0;
+    height: 0;
+    border-right: solid 8px transparent;
+    border-left: solid 8px transparent;
+    border-bottom: solid 8px white;
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 4px);
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.4s ease-in-out;
+    z-index: 2;
+}
+
+.container:hover {
+    .tooltip {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .tail {
+        opacity: 1;
+        visibility: visible;
+    }
+
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

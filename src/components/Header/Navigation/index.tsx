@@ -1,5 +1,5 @@
 import s from './navigation.module.scss'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import AuthButton from '../AuthButton'
 import { useRecoilState } from 'recoil'
 import { authState, loggingInState } from '../../../stores/auth'
@@ -30,19 +30,19 @@ const Navigation = () => {
                     </a>
                 </li>
                 <li className={location.pathname === '/map' ? s.activeLink : ''}>
-                    <a href="/map">
+                    <Link to="/map">
                         Map
-                    </a>
+                    </Link>
                 </li>
                 {Boolean(auth.user) && <li className={location.pathname === '/annotation' ? s.activeLink : ''}>
-                    <a href="/annotation">
+                    <Link to="/annotation">
                         Annotation
-                    </a>
+                    </Link>
                 </li>}
                 {Boolean(auth.admin) && <li className={location.pathname.startsWith('/admin') ? s.activeLink : ''}>
-                    <a href="/admin">
+                    <Link to="/admin">
                         Admin
-                    </a>
+                    </Link>
                 </li>}
             </ul>
             <AuthButton onClick={handleAuthClick} />

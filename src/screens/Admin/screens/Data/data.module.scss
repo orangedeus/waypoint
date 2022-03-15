@@ -1,0 +1,36 @@
+@import 'src/styles/common.scss';
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+}
+
+.dataCard {
+    grid-column: 1 / 7;
+}
+
+.selectContainer {
+    width: 100%;
+    display: flex;
+    column-gap: 4px;
+    align-items: center;
+}
+
+.select {
+    width: 25%;
+    font-size: 16px;
+    font-family: $content2-font-family;
+}
+
+.csvLink {
+    padding: 4px 16px;
+    margin-left: 12px;
+    background-color: $theme-color;
+    font-size: 20px;
+    border-radius: 16px;
+    color: white;
+    font-family: $content-font-family;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+}

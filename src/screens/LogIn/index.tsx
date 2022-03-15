@@ -4,6 +4,8 @@ import s from './login.module.scss'
 
 import bust from '../../assets/bust.svg'
 
+import { useNavigate } from 'react-router-dom'
+
 import {
     loggingInState,
     authState
@@ -24,6 +26,8 @@ const Login = (): JSX.Element => {
     const [valid, setValid] = useState<ValidType>('default')
     const [inputCode, setInputCode] = useState<string | undefined>()
     const [fail, setFail] = useState(false)
+
+    const navigate = useNavigate()
 
     const toggleLoggingIn = () => {
         setLoggingIn(!loggingIn)
@@ -60,6 +64,8 @@ const Login = (): JSX.Element => {
                     localStorage.setItem('auth', JSON.stringify(data))
                     setAuth(data)
                     setLoggingIn(false)
+                    navigate('/')
+                    window.scrollTo({top: 0, behavior: 'smooth'})
                 } else {
                     setFail(true)
                 }

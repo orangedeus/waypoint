@@ -1,29 +1,12 @@
 import axios from 'axios'
-import { DashboardStats } from '../../types/Admin'
+import { DashboardStats, FileStops } from '../../types/Admin'
 
-
-const BACKEND_API = process.env.REACT_APP_BACKEND_API || ""
-const PROCESSING_API = process.env.REACT_APP_PROCESSING_API || ""
+import {BACKEND_API} from './endpoints'
 
 
 
 async function getDashboardStats(): Promise<DashboardStats> {
     const response = await axios.get(`${BACKEND_API}/dashboard`)
-    return response.data
-}
-
-async function getRoutesOptions() {
-    const response = await axios.get(`${BACKEND_API}/routes`)
-    return response.data
-}
-
-async function getBatchOptions(route: string) {
-    const req = {
-        route: route
-    }
-
-    const response = await axios.post(`${BACKEND_API}/batch/route`, req)
-
     return response.data
 }
 
@@ -41,4 +24,43 @@ async function postGenerateCodes(code: string, number: number, threshold: number
     return response.data
 }
 
-export const service = { getDashboardStats, getRoutesOptions, getBatchOptions, postGenerateCodes }
+async function getCodesInstrumentation() {
+    const response = await axios.get(`${BACKEND_API}/instrumentation/codes`)
+    return response.data
+}
+
+async function getHistogramData(route: string, batch: number | string) {
+    const response = await axios.get(`${BACKEND_API}/data/histogram?route=${route}&batch=${batch}`)
+    return response.data
+}
+
+async function getTrackingData(route: string, batch: string | number) {
+    const response = await axios.get(`${BACKEND_API}/process/tracking?route=${route}&batch=${batch}`)
+
+    return response.data
+} 
+
+async function getFileData(filename: string, route: string, batch: number | string): Promise<FileStops[]> {
+    const response =  await axios.get(`${BACKEND_API}/stops/file/${filename}/?route=${route}&batch=${batch}`)
+
+    return response.data
+}
+
+async function getCSVData(src: string) {
+    const response = await axios.get(src)
+
+    return response.data
+}
+
+async function postRetirement(route: string, batch: number) {
+    const req = {
+        route: route,
+        batch: batch
+    }
+
+    const response = await axios.post(`${BACKEND_API}/batch/retire`, req)
+
+    return response.data
+}
+
+export const service = { getDashboardStats, getCodesInstrumentation, getHistogramData, getTrackingData, getFileData, postGenerateCodes, postRetirement, getCSVData }

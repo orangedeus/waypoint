@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import s from "./map.module.scss"
-import { FilterType, service } from "../../utils/api/MapService"
+import { FilterType, TimeType, service } from "../../utils/api/MapService"
+
+import { getRoutesOptions, getBatchOptions } from "../../utils/api"
 
 import Select, { SingleValue } from "react-select"
 import {
@@ -46,6 +48,8 @@ type RouteSelect = {
     label: string
 }
 
+
+
 const Map = () => {
 
     const [route, setRoute] = useState("")
@@ -56,19 +60,40 @@ const Map = () => {
         boarding: false,
         alighting: false,
         annotated: false,
-        following: false
+        following: false,
     })
 
     const [collapsed, setCollapsed] = useState(true)
 
     const [markers, setMarkers] = useState<JSX.Element[]>([])
 
+    const [time, setTime] = useState<TimeType>('none')
+
+    const timeToNumber = () => {
+        switch (time) {
+            case "none":
+                return 0
+            case "morning":
+                return 1
+            case "noon":
+                return 2
+            case "evening":
+                return 3
+            default:
+                return 0
+        }
+    }
+
+    useEffect(() => {
+        console.log(time)
+    }, [time])
+
     useEffect(() => {
         updateMarkers()
-    }, [route, filters])
+    }, [route, filters, time])
 
     const updateMarkers = () => {
-        service.getFilteredStops(route, filters).then((data) => {
+        service.getFilteredStops(route, filters, time).then((data) => {
             generateMarkers(data)
         })
     }
@@ -120,7 +145,7 @@ const Map = () => {
     }, [markers])
 
     const handleSelectOpen = () => {
-        service.getRoutes().then((data) => {
+        getRoutesOptions().then((data) => {
             setRoutes([{value: 0, label: 'All'}].concat(data))
         })
     }
@@ -142,6 +167,28 @@ const Map = () => {
 
     const handleCollapse = () => {
         setCollapsed(!collapsed)
+    }
+
+    const handleTimeRange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let tempTime: TimeType
+        switch (event.target.value) {
+            case '0':
+                tempTime = 'none'
+                break
+            case '1':
+                tempTime = 'morning'
+                break
+            case '2':
+                tempTime = 'noon'
+                break
+            case '3':
+                tempTime = 'evening'
+                break
+            default:
+                tempTime = 'none'
+        }
+
+        setTime(tempTime)
     }
 
     return (
@@ -191,6 +238,10 @@ const Map = () => {
                             <div>
                                 <input type="checkbox" id="following" name="following" value="following" onChange={handleFilter} checked={filters.following} />
                                 <label htmlFor="following">&#10060; COVID Regulations Violations (Manual)</label>
+                            </div>
+                            <div>
+                                <input value={timeToNumber()} type="range" min="0" max="3" id="time" name="time" onChange={handleTimeRange} />
+
                             </div>
                         </>}
                     </div>

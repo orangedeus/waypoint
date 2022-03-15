@@ -1,10 +1,134 @@
+@import 'src/styles/common.scss';
+
 .container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     column-gap: 12px;
+    row-gap: 12px;
 }
 
 .upload {
     grid-column: 1 / 13;
     min-height: calc(100vh - 140px);
+}
+
+.trackingHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.selectContainer {
+    display: flex;
+}
+
+.select {
+    width: 300px;
+    margin: 0px 8px;
+    font-family: $content2-font-family;
+}
+
+.tableContainer {
+    overflow-y: scroll;
+    max-height: calc(100vh - 140px);
+
+    scrollbar-width: none;
+    overscroll-behavior-y: contain;
+}
+
+.tableContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.table {
+    width: 100%;
+}
+
+
+.tableHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+
+    font-family: $content-font-family;
+    font-size: 20px;
+}
+
+.tableRow {
+    cursor: pointer;
+    transition: 0.4s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+.tableRow:hover {
+    background-color: #e6e6e6;
+}
+
+.tableItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+
+    font-family: $content2-font-family;
+    font-size: 14px;
+
+    transition: 0.4s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+.tableData {
+    display: flex;
+    width: calc(100% - 128px);
+    min-height: 200px;
+    margin: 16px 64px;
+
+    border: solid 1px #e6e6e6;
+    border-radius: 12px;
+}
+
+.tableItem:hover {
+    background-color: #ccc;
+}
+
+.deleteButton {
+    border: none;
+    outline: none;
+    background-color: $theme-color;
+    padding: 2px 12px;
+    color: white;
+    font-family: $content-font-family;
+    font-size: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.done {
+    color: $theme-color;
+    position: relative;
+    font-weight: bold;
+}
+
+.done:before {
+    content: "✔";
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    color: white;
+    background-color: $theme-color2;
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translate(0, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.stickyRow {
+    position: sticky;
+    top: 0px;
+    left: 0px;
+    background-color: white;
+    border-bottom: solid 1px #e6e6e6;
+    z-index: 99;
 }

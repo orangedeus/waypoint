@@ -1,0 +1,48 @@
+@import 'src/styles/common.scss';
+
+.container {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 4px 16px;
+}
+
+.message {
+    width: 75%;
+    font-family: $content-font-family;
+    font-size: 20px;
+}
+
+.form {
+    width: fit-content;
+    margin-top: 16px;
+}
+
+.nameInput {
+    width: 400px;
+    margin: 16px;
+}
+
+.ageInput {
+    width: 400px;
+    margin: 16px;
+}
+
+
+.select {
+    width: 400px;
+    margin: 16px;
+}
+
+.button {
+    background-color: $theme-color;
+    padding: 4px 14px;
+    color: white;
+    font-family: $content-font-family;
+    font-size: 20px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    margin: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+}

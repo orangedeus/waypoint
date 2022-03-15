@@ -1,26 +1,22 @@
-import React, { ReactNode, forwardRef, useEffect, useRef, useState, useCallback, useImperativeHandle } from 'react';
+import React, { ReactNode, forwardRef, useEffect, useRef, useState, useCallback, useImperativeHandle, ReactChild, ReactElement, ReactComponentElement } from 'react';
 import Select from 'react-select';
 import Creatable from 'react-select/creatable';
 import {useDropzone} from 'react-dropzone';
 import axios from 'axios';
 
-import noRoute from 'assets/no-route.png';
-import ready from 'assets/ready.png';
-import uploaded from 'assets/uploaded.png';
-import processed from 'assets/processed.png';
-import failed from 'assets/process-failed.png';
-import problem from 'assets/network-problem.png';
 import crypto from 'crypto';
 import { Buffer } from 'buffer';
 
 import s from './uploader.module.scss'
 import Loader from './Loader';
 
+import SingleFileUpload, { Status } from '../SingleFileUpload'
+
 function useStateCallback(initialState: any) {
     const [state, setState] = useState(initialState)
     const cbRef = useRef<any>(null)
 
-    const setStateCallback = useCallback((state, cb) => {
+    const setStateCallback = useCallback((state: any, cb: any) => {
         cbRef.current = cb
         setState(state)
     }, [])
@@ -86,353 +82,20 @@ function Dropzone({ files, passFiles, passInstance, instance_url, instance }: Dr
     )
 }
 
-type SingleFileUploadProps = {
-    file: any
-    checked: boolean
-    status: string
-    route: string
-    onClose: (filename: string) => void
+type UploadElement = {
+    jsx: JSX.Element | any
 }
-
-const SingleFileUpload = forwardRef(({file: fileProp, checked: checkedProp, status: statusProp, onClose}: SingleFileUploadProps, ref) => {
-
-    const url = "http://13.251.37.189:3001"
-    const instance_url = "http://18.136.217.164:3001"
-
-    const CHUNK_SIZE = 52428800
-
-    const [progress, setProgress] = useState(0)
-    const [file, setFile] = useState(fileProp)
-    const [route, setRoute] = useState('')
-    const [routes, setRoutes] = useState([])
-    const [checked, setChecked] = useState(checkedProp)
-    const [status, setStatus] = useState(statusProp)
-    const [status2, setStatus2] = useState('')
-    const [batch, setBatch] = useState(0)
-    const [batches, setBatches] = useState([])
-    const [tracking, setTracking] = useState(0)
-
-    const [currChecksum, setCurrChecksum] = useState('')
-    const [currChunk, setCurrChunk] = useState(0)
-
-
-
-    const selectRef = useRef<any>()
-    const selectBatchRef = useRef<any>()
-
-    const generateChecksum = (file: any) => {
-        return crypto.createHash('md5').update(file).digest('hex')
-    }
-
-
-    useEffect(() => {
-        let updateProcess: any
-        if (status == 'processing') {
-            updateProcess = setInterval(() => {
-                axios.get(instance_url + `/process/tracking_process?tracking=${tracking}`).then((res) => {
-                    setStatus2(res.data.status)
-                })
-            }, 3000)
-        } else {
-            clearInterval(updateProcess)
-        }
-
-        if (status == 'upload-problem') {
-            upload()
-        }
-
-        return () => {
-            clearInterval(updateProcess)
-        }
-    }, [status])
-
-    useEffect(() => {
-        if (status == 'processing' && status2 == 'Done!') {
-            setStatus('processed')
-        }
-    }, [status2])
-
-    useEffect(() => {
-        if (status == 'noRoute') {
-            if (route != '') {
-                setStatus('ready')
-            }
-        }
-        if (route == '') {
-            setStatus('noRoute')
-        }
-    }, [route])
-
-    useEffect(() => {
-        console.log(tracking)
-    }, [tracking])
-
-    useImperativeHandle(ref, () => ({
-        check: (bool: any) => {
-            setChecked(Boolean(bool))
-        },
-        upload: () => {
-            upload()
-        },
-        uploaded: () => {
-            setStatus("uploaded")
-        },
-        close: () => {
-            handleClose()
-        },
-        process: () => {
-            setStatus("processing")
-        },
-        processed: () => {
-            setStatus("processed")
-        },
-        failed: () => {
-            setStatus("failed")
-        },
-        changeRoute: (e: any) => {
-            console.log(selectRef.current.state.value)
-            if (e.value == 'nothing') {
-                console.log('should remove selection')
-                selectRef.current.state.value = null
-                setRoute('')
-                setBatch(0)
-                return
-            }
-            handleSelectChange(e)
-            setBatch(0)
-            console.log(selectRef.current)
-            // selectRef.current.state.value = e
-        },
-        changeBatch: (e: any) => {
-            handleBatchSelectChange(e)
-            // selectRef.current.state.value = e
-        },
-        name: file.name,
-        route: route,
-        batch: batch,
-        tracking: tracking,
-        status: status,
-        checked: checked
-    }))
-
-    const tracking_update = (status: any) => {
-        return new Promise((resolve, reject) => {
-            let req = {
-                stage: 'update',
-                status: status,
-                route: route,
-                batch: batch,
-                fileName: file.name,
-                tracking: tracking
-            }
-            axios.post(instance_url + '/process/tracking', req).then((res) => {
-                resolve(res.data.tracking)
-            }).catch(e => {
-                reject(e)
-            })
-        })
-    }
-
-    const upload = async () => {
-        if (status == 'uploading') {
-            return;
-        }
-    
-        let bytes, totalBytesSent
-        axios.get(url + `/v2/process/upload_status?filename=${file.name}&route=${route}&batch=${batch}`).then(async (res) => {
-            setStatus('uploading')
-            setTracking(parseInt(res.data.tracking))
-            bytes = res.data.bytes
-            totalBytesSent = bytes
-    
-            for (let i = bytes; i < file.size; i += CHUNK_SIZE) {
-                let [currChunk, currChecksum, currChunkSize] = await buildChunk(i)
-                let [formData, config] = await buildRequest(currChunk, currChecksum, i, currChunkSize, totalBytesSent)
-                await uploadChunk(formData, config)
-                totalBytesSent += currChunkSize
-            }
-            setStatus('uploaded')
-            tracking_update('Uploaded')
-        }).catch((e) => {
-            console.log(e)
-            setStatus('upload-problem')
-            return
-        })
-    
-        async function buildChunk(chunkStart: any) {
-            let nextByte = Math.min(file.size, chunkStart + CHUNK_SIZE)
-            let chunkSlice = file.slice(chunkStart, nextByte);
-            let chunk = new File([chunkSlice], file.name, {lastModified: file.lastModified})
-            let chunkBuffer = await chunk.arrayBuffer();
-            console.log(chunkBuffer)
-            let checksum = generateChecksum(Buffer.from(chunkBuffer))
-            return [chunk, checksum, nextByte - chunkStart]
-        }
-    
-        async function buildRequest(currChunk: any, currChecksum: any, chunkStart: any, currChunkSize: any, totalBytesSent: any) {
-            let formData = new FormData()
-            formData.append('file', currChunk)
-            const config = {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    "x-file-name": file.name,
-                    "x-file-size": file.size,
-                    "x-file-checksum": currChecksum,
-                    "x-chunk-size": currChunkSize,
-                    "x-chunk-start": chunkStart,
-                    "x-route": route,
-                    "x-batch": batch,
-                    "x-tracking": tracking
-                },
-                onUploadProgress: (ProgressEvent: any) => {
-                    let tempProgress = Math.round((totalBytesSent + ProgressEvent.loaded) / (file.size) * 100)
-                    setProgress(tempProgress)
-                }
-            }
-            return [formData, config]
-        }
-    
-        async function uploadChunk(formData: any, config: any) {
-            try {
-                const res = await axios.post(url + '/v2/process/chunk', formData, config)
-                const { data } = await res
-                console.log(data)
-                if (data.status == 0) {
-                    await uploadChunk(formData, config)
-                }
-                return
-            } catch (e) {
-                await uploadChunk(formData, config)
-                return
-            }
-        }
-    }
-
-
-
-    const getStatusDisplay = () => {
-        if (status == 'noRoute') {
-            return (
-                <div className="ReadyStatusDisplay">
-                    <img src="/assets/no-route.png" className="StatusImages" />
-                    <p className="ReadyLabel">No route selected!</p>
-                </div>
-            )
-        }
-        if (status == 'ready') {
-            return (
-                <div className="ReadyStatusDisplay">
-                    <img src="/assets/ready.png" className="StatusImages" />
-                    <p className="ReadyLabel">Ready</p>
-                </div>
-            )
-        }
-        if (status =='uploading') {
-            return (
-                <div className="UploadingStatusDisplay">
-                    <Loader />
-                    <p className="UploadLabel">Uploading... {`${progress}%`}</p>
-                </div>
-            )
-        }
-        if (status =='uploaded') {
-            return (
-                <div className="ReadyStatusDisplay">
-                    <a href={`${url}/watch/${file.name}`} target="_blank" type="video/mp4"><img src="/assets/uploaded.png" className="StatusImages" /></a>
-                    <p className="ReadyLabel">Uploaded</p>
-                </div>
-            )
-        }
-        if (status == 'processing') {
-            return (
-                <div className="UploadingStatusDisplay">
-                    <div className="Loader" />
-                    <p className="UploadLabel">Processing... {status2}</p>
-                </div>
-            )
-        }
-        if (status == 'processed') {
-            return (
-                <div className="ReadyStatusDisplay">
-                    <img src="/assets/processed.png" className="StatusImages" />
-                    <p className="ReadyLabel">Processed!</p>
-                </div>
-            )
-        }
-        if (status == 'failed') {
-            return (
-                <div className="ReadyStatusDisplay">
-                    <img src="/assets/process-failed.png" className="StatusImages" />
-                    <p className="ReadyLabel">Failed! :(</p>
-                </div>
-            )
-        }
-        if (status == 'upload-problem') {
-            return (
-                <div className="ReadyStatusDisplay">
-                    <img src="/assets/network-problem.png" className="StatusImages" />
-                    <p className="ReadyLabel">Network Problem.</p>
-                </div>
-            )
-        }
-    }
-
-    const handleSelect = () => {
-        axios.get(instance_url + '/routes').then((res) => {
-            setRoutes(res.data)
-        })
-    }
-
-    const handleSelectChange = (e: any) => {
-        setRoute(e.label)
-        console.log(e.label)
-    }
-
-    const handleBatchSelect = () => {
-        axios.post(instance_url + '/batch/route', {route: route}).then((res) => {
-            setBatches(res.data.map((batch: any) => ({value: batch.batch, label: batch.batch})))
-        })
-    }
-
-    const handleBatchSelectChange = (e: any) => {
-        setBatch(e.value)
-    }
-
-    const handleClose= () => {
-        onClose(file.name)
-    }
-
-    return(
-        <div className={s.singleFileUpload}>
-            <button onClick={handleClose} className={s.close}>
-                ✕
-            </button>
-            <div className={s.uploadLabel}>
-                <input type="checkbox" id={`checkbox-${file.name}`} checked={checked} onChange={() => {setChecked((curr) => {return !curr})}} />
-                <label htmlFor={`checkbox-${file.name}`}>
-                    {file.name}
-                </label>
-                <Select className={s.select} key={`select-route-${file.name}`} placeholder="Select route" ref={selectRef} value={route == "" ? null : {value: -1, label: route}} options={routes} isSearchable={false} onMenuOpen={handleSelect} onChange={handleSelectChange} />
-                <Select className={s.select} key={`select-batch-${file.name}`} placeholder="Select batch" ref={selectBatchRef} value={batch == 0 ? null : {value: -1, label: batch}} options={batches} isSearchable={false} onMenuOpen={handleBatchSelect} onChange={handleBatchSelectChange} />
-            </div>
-            <div className="StatusDisplay">
-                {getStatusDisplay()}
-            </div>
-        </div>
-    )
-})
 
 export default function Uploader() {
     const url = "http://13.251.37.189:3001"
     const instance_url = "http://18.136.217.164:3001"
 
     const [files, setFiles] = useStateCallback([])
-    const [route, setRoute] = useState<any>('')
-    const [batch, setBatch] = useState(0)
+    const [route, setRoute] = useState<string>('')
+    const [batch, setBatch] = useState<number>(0)
     const [batches, setBatches] = useState<any>([])
     const [routes, setRoutes] = useState<any>([])
-    const [statusControl, setStatusControl] = useState('ready')
-    const [Uploads, setUploads] = useState<any>([])
+    const [Uploads, setUploads] = useState<UploadElement[]>([])
     const [all, setAll] = useState(false)
     const [instance, setInstance] = useState(false)
     const [toggleDropdown, toggle] = useState(false)
@@ -474,7 +137,7 @@ export default function Uploader() {
         setUploads((curr: any) => {
             return files.map((file: any) => {
                 return {
-                    jsx: <SingleFileUpload key={file.name} ref={React.createRef()} file={file} route={route} status='noRoute' onClose={handleClose} checked={all} />
+                    jsx: <SingleFileUpload key={file.name} ref={React.createRef()} file={file} route={route} status='no-route' onClose={handleClose} checked={all} />
                 }
             })
             /* let FileUploads = []
@@ -519,8 +182,8 @@ export default function Uploader() {
         }).catch(e => {
             console.log(e)
         })
-        setFiles((curr: any) => {
-            return curr.filter((element: any) => {
+        setFiles((curr: File[]) => {
+            return curr.filter((element: File) => {
                 let index = Uploads.findIndex((i: any) => {
                     return i.jsx.ref.current.name == element.name
                 })

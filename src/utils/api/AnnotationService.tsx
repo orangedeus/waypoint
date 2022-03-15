@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { AnnotationMeta } from '../../types/Annotation';
+import { AnnotationMeta, Survey } from '../../types/Annotation';
 
-const BACKEND_API = process.env.REACT_APP_BACKEND_API || ""
-const PROCESSING_API = process.env.REACT_APP_PROCESSING_API || ""
+import {BACKEND_API} from './endpoints'
 
 async function getStopsForAnnotation(code: string) {
     const req = {
@@ -41,8 +40,17 @@ async function postAnnotationData(annotation: AnnotationMeta) {
     return response.data
 }
 
+async function postSurvey(survey: Survey) {
+    const req = survey
+
+    const response = await axios.post(`${BACKEND_API}/survey/submit`, req)
+
+    return response.data
+}
+
 export const service = {
     getStopsForAnnotation,
     getAdminStops,
-    postAnnotationData
+    postAnnotationData,
+    postSurvey
 }

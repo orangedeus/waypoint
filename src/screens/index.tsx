@@ -21,6 +21,9 @@ import Admin from "./Admin";
 import Dashboard from "./Admin/screens/Dashboard";
 import AnnotatorManagement from "./Admin/screens/AnnotatorManagement";
 import Upload from "./Admin/screens/Upload";
+import Data from "./Admin/screens/Data";
+import Settings from "./Admin/screens/Settings";
+import { service } from "../utils/api/AuthService";
 
 const Index = () => {
     const [loggingIn,] = useRecoilState(loggingInState)
@@ -29,8 +32,14 @@ const Index = () => {
     useEffect(() => {
         const prevAuth = localStorage.getItem('auth')
         if (prevAuth !== null) {
-            setAuth(JSON.parse(prevAuth))
+            service.postLoginCode(JSON.parse(prevAuth).code).then((data) => {
+                setAuth(data)
+            })
         }
+
+        // Preload large images
+
+        new Image().src = `/assets/banner.jpg`
     }, [])
 
     return (
@@ -46,7 +55,9 @@ const Index = () => {
                         {Boolean(auth.admin) && <Route path="admin" element={<Admin />}>
                             <Route index element={<Dashboard />} />
                             <Route path="/admin/annotator_management" element={<AnnotatorManagement />} />
-                            <Route path="/admin/upload" element={<Upload />} /> 
+                            <Route path="/admin/upload" element={<Upload />} />
+                            <Route path="/admin/data" element={<Data />} /> 
+                            <Route path="/admin/settings" element={<Settings />} />
                         </Route>}
                         <Route path="*" element={<NotFound />} />
                     </Route>

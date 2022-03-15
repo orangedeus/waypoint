@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-const BACKEND_API = process.env.REACT_APP_BACKEND_API || ""
-const PROCESSING_API = process.env.REACT_APP_PROCESSING_API || ""
+import {BACKEND_API} from './endpoints'
+
+export type TimeType = 'none' | 'morning' | 'noon' | 'evening'
 
 export type FilterType = {
     people: boolean
@@ -9,24 +10,20 @@ export type FilterType = {
     alighting: boolean
     annotated: boolean
     following: boolean
+    time?: TimeType
 }
 
 
-async function getFilteredStops(route: string, filter: FilterType) {
+async function getFilteredStops(route: string, filter: FilterType, time: TimeType) {
     const request = {
         route: route,
-        filter: filter
+        filter: filter,
+        time: time
     }
     const response = await axios.post(`${BACKEND_API}/stops/filtered`, request)
     return response.data
 }
 
-async function getRoutes() {
-    const response = await axios.get(`${BACKEND_API}/routes`)
-    return response.data
-}
-
 export const service = {
-    getFilteredStops,
-    getRoutes
+    getFilteredStops
 }
