@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { SingleValue } from 'react-select'
 import { getBatchOptions, getRoutesOptions } from '../../../../utils/api'
 import Card from '../../components/Card'
@@ -15,6 +15,7 @@ import cx from 'classnames'
 
 import Select from 'react-select'
 import ExpandingRow from './components/ExpandingRow'
+import { FlashContext } from '../../../../hooks/FlashProvider'
 
 const Upload = (): JSX.Element => {
 
@@ -25,9 +26,7 @@ const Upload = (): JSX.Element => {
 
     const [tracking, setTracking] = useState<any>([])
 
-    const [trackigRoute, setTrackingRoute] = useState<string>('')
-    const [trackingBatch, setTrackingBatch] = useState<string | number>('')
-    const [trackingBatches, setTrackingBatches] = useState<any[]>([])
+    const {setFlash} = useContext(FlashContext)
 
     useEffect(() => {
         console.log(tracking)
@@ -55,6 +54,32 @@ const Upload = (): JSX.Element => {
         if (event && event.value) {
             setBatch(event.value)
         }
+    }
+
+    const handleDelete = (source_file: string, route: string, batch: number, tracking: string | number) => {
+        service.postDelete(source_file, route, batch, tracking).then((data) => {
+            console.log(data)
+            if (data === 'Success!') {
+                service.getTrackingData(route, batch).then((data) => {
+                    setTracking(data)
+                }).then(() => {
+                    setFlash({
+                        type: '+',
+                        message: <p>{`Successfully deleted file with tracking no.`}<b>{` ${tracking}`}</b></p>
+                    })
+                })
+            } else {
+                setFlash({
+                    type: '-',
+                    message: `An error occurred.`
+                })
+            }
+        }).catch(() => {
+            setFlash({
+                type: '-',
+                message: `An error occurred.`
+            })
+        })
     }
     
     useEffect(() => {
@@ -121,7 +146,7 @@ const Upload = (): JSX.Element => {
                                 </GridCell>
                             })}
                             <GridCell className={s.tableItem}>
-                                <button className={s.deleteButton}>
+                                <button className={s.deleteButton} onClick={() => handleDelete(unomitted['filename'], unomitted['route'], unomitted['batch'], unomitted['id'])}>
                                     Delete
                                 </button>
                             </GridCell>

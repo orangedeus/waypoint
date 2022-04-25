@@ -63,4 +63,12 @@ async function postRetirement(route: string, batch: number) {
     return response.data
 }
 
-export const service = { getDashboardStats, getCodesInstrumentation, getHistogramData, getTrackingData, getFileData, postGenerateCodes, postRetirement, getCSVData }
+async function postDelete(source_file: string, route: string, batch: number, tracking: string | number) {
+    const req = { source_file, route, batch, tracking }
+
+    const response = await axios.post(`${BACKEND_API}/stops/delete`, req)
+
+    return response.data
+}
+
+export const service = { getDashboardStats, getCodesInstrumentation, getHistogramData, getTrackingData, getFileData, postGenerateCodes, postRetirement, postDelete, getCSVData }

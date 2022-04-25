@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {DetailedHTMLProps, HTMLAttributes, useEffect, useRef, useState} from 'react'
 import s from './text.module.scss'
 import cx from 'classnames'
 
@@ -12,7 +12,7 @@ type InputBoxProps = {
     className?: string
     onEnter?: () => void
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
-}
+} & DetailedHTMLProps<HTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
 const INVALID_VALUE = [
     'Hindi numero',
@@ -24,7 +24,7 @@ const INVALID_VALUE = [
     ''
 ]
 
-const InputBox = ({id, label, value, number = true, type = 'text', fail = false, className, onEnter, onChange}: InputBoxProps): JSX.Element => {
+const InputBox = ({id, label, value, number = true, type = 'text', fail = false, className, onEnter, onChange, ...props}: InputBoxProps): JSX.Element => {
 
     const [error, setError] = useState(-1)
 
@@ -111,6 +111,8 @@ const InputBox = ({id, label, value, number = true, type = 'text', fail = false,
     useEffect(() => {
         if (value !== undefined) {
             validateValue()
+        } else {
+            setError(-1)
         }
     }, [value])
 
@@ -136,8 +138,14 @@ const InputBox = ({id, label, value, number = true, type = 'text', fail = false,
         }
     }
 
+    const [focused, setFocused] = useState(false)
+
+    const handleFocus = () => {
+        setFocused(true)
+    }
+
     return <div className={`${s.container}${` ${className && className}`}`}>
-        <input id={id} value={value} type={type} min={0} className={s.container} style={getBorderStyle()} onKeyDown={handleKeyDown} onChange={handleChange} />
+        <input id={id} value={value ?? ""} type={type} min={0} className={s.container} style={getBorderStyle()} onKeyDown={handleKeyDown} onChange={handleChange} onFocus={handleFocus} {...props} />
         <label ref={labelRef} htmlFor={id} style={{
             color: error !== -1 ? 'red' : 'black'
         }}>

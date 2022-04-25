@@ -178,6 +178,13 @@
     font-weight: bold;
     padding: 8px 24px;
     border-radius: 40px;
+    min-width: 157px;
+    min-height: 47px;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     cursor: pointer;
     transition: 0.2s ease-in;
