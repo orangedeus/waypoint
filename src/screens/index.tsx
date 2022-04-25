@@ -24,6 +24,7 @@ import Upload from "./Admin/screens/Upload";
 import Data from "./Admin/screens/Data";
 import Settings from "./Admin/screens/Settings";
 import { service } from "../utils/api/AuthService";
+import FlashProvider from "../hooks/FlashProvider";
 
 const Index = () => {
     const [loggingIn,] = useRecoilState(loggingInState)
@@ -44,26 +45,28 @@ const Index = () => {
 
     return (
         <Router>
-            <div className="container">
-                {loggingIn && <Login />}
-                <Header />
-                <Routes>
-                    <Route path="/">
-                        <Route index element={<Home />} />
-                        <Route path="map" element={<Map />} />
-                        {Boolean(auth.user) && <Route path="annotation" element={<Annotation />} />}
-                        {Boolean(auth.admin) && <Route path="admin" element={<Admin />}>
-                            <Route index element={<Dashboard />} />
-                            <Route path="/admin/annotator_management" element={<AnnotatorManagement />} />
-                            <Route path="/admin/upload" element={<Upload />} />
-                            <Route path="/admin/data" element={<Data />} /> 
-                            <Route path="/admin/settings" element={<Settings />} />
-                        </Route>}
-                        <Route path="*" element={<NotFound />} />
-                    </Route>
-                </Routes>
-                <Footer />
-            </div>
+            <FlashProvider>
+                <div className="container">
+                    {loggingIn && <Login />}
+                    <Header />
+                    <Routes>
+                        <Route path="/">
+                            <Route index element={<Home />} />
+                            <Route path="map" element={<Map />} />
+                            {Boolean(auth.user) && <Route path="annotation" element={<Annotation />} />}
+                            {Boolean(auth.admin) && <Route path="admin" element={<Admin />}>
+                                <Route index element={<Dashboard />} />
+                                <Route path="/admin/annotator_management" element={<AnnotatorManagement />} />
+                                <Route path="/admin/upload" element={<Upload />} />
+                                <Route path="/admin/data" element={<Data />} /> 
+                                <Route path="/admin/settings" element={<Settings />} />
+                            </Route>}
+                            <Route path="*" element={<NotFound />} />
+                        </Route>
+                    </Routes>
+                    <Footer />
+                </div>
+            </FlashProvider>
         </Router>
     )
 }

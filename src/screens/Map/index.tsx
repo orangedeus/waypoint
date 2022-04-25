@@ -24,6 +24,8 @@ import L, {
 import 'leaflet/dist/leaflet.css'
 
 import x from '../../assets/x.png'
+import Options from "../../components/Option"
+import Tooltip from "../../components/Tooltip"
 
 type Parameter = "people" | "annotated" | "boarding" | "alighting"
 
@@ -138,7 +140,7 @@ const Map = () => {
             ctr += 1
         }
         setMarkers(tempMarkers)
-    } 
+    }
 
     useEffect(() => {
         console.log(markers)
@@ -191,6 +193,18 @@ const Map = () => {
         setTime(tempTime)
     }
 
+    const getFirstMarkerLatLng = (firstMarker: any, center: any) => {
+        if (firstMarker) {
+            return firstMarker.props.center ? firstMarker.props.center : firstMarker.props.bounds[0]
+        }
+
+        return center
+    }
+
+    const handleTimeSelect = (time: TimeType) => {
+        setTime(time)
+    }
+
     return (
         <div id="mapContainer" className={s.container}>
             <MapContainer className={s.map} center={[11.803, 122.563]} zoom={5} scrollWheelZoom={true}>
@@ -200,7 +214,8 @@ const Map = () => {
                         let zoom = map.getZoom()
                         if (markers.length) {
                             const firstMarker = markers[0]
-                            map.flyTo(firstMarker.props.center, 17, {duration: 0.25})
+                            map.flyTo(getFirstMarkerLatLng(firstMarker, center), Math.max(13, zoom), {duration: 0.25})
+                            
                         }
                         return null
                     }}
@@ -239,9 +254,18 @@ const Map = () => {
                                 <input type="checkbox" id="following" name="following" value="following" onChange={handleFilter} checked={filters.following} />
                                 <label htmlFor="following">&#10060; COVID Regulations Violations (Manual)</label>
                             </div>
-                            <div>
-                                <input value={timeToNumber()} type="range" min="0" max="3" id="time" name="time" onChange={handleTimeRange} />
-
+                            <div style={{
+                                margin: `8px 0px 0px 16px`
+                            }}>
+                                <Options<TimeType> options={[
+                                    {label: 'None', value: "none", color: "#62A2CC"},
+                                    {label: <Tooltip iClass={s.tooltipContainer} className={s.tooltip} label={'Morning'}>{`12AM-8AM`}</Tooltip>, value: "morning", color: "#5C777F"},
+                                    {label: <Tooltip className={s.tooltip} label={'Noon'}>{`8AM-4PM`}</Tooltip>, value: "noon", color: "#FFB449"},
+                                    {label: <Tooltip className={s.tooltip} label={'Evening'}>{`4PM-11:59PM`}</Tooltip>, value: "evening", color: "#2B2C5A"},
+                                ]}
+                                    defaultOption={{label: 'None', value: "none"}}
+                                    onSelect={handleTimeSelect}
+                                />
                             </div>
                         </>}
                     </div>

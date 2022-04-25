@@ -13,6 +13,8 @@ import { Stops } from '../../types/Stops'
 import { authState } from '../../stores/auth'
 import Landing from './Landing'
 
+import Loader from '../../components/Loader'
+
 type Video = {
     url: string
 }
@@ -27,6 +29,8 @@ const Annotation = (): JSX.Element => {
 
     const [currentIndex, setCurrentIndex] = useState(0)
     const [error, setError] = useState(-1)
+
+    const [submitting, setSubmitting] = useState(false)
     
 
     const [finishedIndex, setFinishedIndex] = useState(0)
@@ -57,7 +61,7 @@ const Annotation = (): JSX.Element => {
 
 
     const validateForm = () => {
-        if (following === undefined || annotated === undefined || boarding === undefined || alighting === undefined) {
+        if (following === null || following === undefined || annotated === undefined || boarding === undefined || alighting === undefined) {
             setError(1)
             return false
         }
@@ -121,7 +125,6 @@ const Annotation = (): JSX.Element => {
     useEffect(() => {
         setTimeout(() => flickingRef.current.moveTo(finishedIndex), 500)
         localStorage.setItem('finishedIndex', String(finishedIndex))
-        setFollowing(null)
     }, [finishedIndex])
 
     const handleChangeFollowing = (event: SingleValue<{
@@ -164,23 +167,34 @@ const Annotation = (): JSX.Element => {
         if (!validateForm()) {
             return false
         }
-        if (currentIndex + 1 > finishedIndex) {
-            setFinishedIndex(currentIndex + 1)
-        } else {
-            if (flickingRef.current) {
-                flickingRef.current.moveTo(currentIndex + 1)
+        setSubmitting(true)
+        service.postAnnotationData({
+            following: Boolean(following),
+            annotated: Number(annotated),
+            alighting: Number(alighting),
+            boarding: Number(boarding),
+            url: videos[currentIndex].url,
+            code: String(code)
+        }).then(() => {
+            setSubmitting(false)
+            if (currentIndex + 1 > finishedIndex) {
+                setFinishedIndex(currentIndex + 1)
+            } else {
+                if (flickingRef.current) {
+                    flickingRef.current.moveTo(currentIndex + 1)
+                }
             }
-        }
-        // service.postAnnotationData({
-        //     following: Boolean(following),
-        //     annotated: Number(annotated),
-        //     alighting: Number(alighting),
-        //     boarding: Number(boarding),
-        //     url: videos[currentIndex].url,
-        //     code: code
-        // })
-        
+        }).catch(() => {
+            setSubmitting(false)
+        })
     }
+
+    useEffect(() => {
+        setFollowing(null)
+        setAnnotated(undefined)
+        setAlighting(undefined)
+        setBoarding(undefined)
+    }, [submitting])
 
     const handleProgressClick= () => {
         if (flickingRef.current) {
@@ -205,7 +219,7 @@ const Annotation = (): JSX.Element => {
                     {videos.map((video, i) => {
                         return(
                             <div className={s.videoContainer} key={`video-container-${i}`}>
-                                {((i < currentIndex + 2) && (i > currentIndex - 2)) && <ReactPlayer key={`video-${i}`} width={800} height={450} controls  url={`${process.env.REACT_APP_BACKEND_API}/videos/${video.url}`} />}
+                                {((i < currentIndex + 2) && (i > currentIndex - 2)) && <ReactPlayer key={`video-${i}`} width={800} height={450} controls  url={`${process.env.REACT_APP_BACKEND_API}/videos/${video.url}`}  />}
                             </div>
                         )
                     })}
@@ -252,7 +266,7 @@ const Annotation = (): JSX.Element => {
                         <InputBox className={s.input} value={annotated} onChange={handleChangeAnnotated} id='annotated' label='Bilang ng tao sa dulo ng bidyo' />
                         <InputBox className={s.input} value={boarding} onChange={handleChangeBoarding} id='boarding' label='Sumakay' />
                         <InputBox className={s.input} value={alighting} onChange={handleChangeAlighting} id='alighting' label='Bumaba' />
-                        <div className={s.submit} onClick={handleAnnotate} >Annotate</div>
+                        <div className={s.submit} onClick={handleAnnotate} >{submitting ? <Loader /> : `Annotate`}</div>
                     </div>
                 </div>
             </div>
