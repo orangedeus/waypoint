@@ -46,7 +46,7 @@ const Settings = (): JSX.Element => {
 
     const handleBatchOpen = () => {
         getBatchOptions(String(route)).then((data) => {
-            setBatches(data.map((batch: any) => ({value: Number(batch.batch), label: batch.batch})))
+            setBatches(data.map((batch: any) => ({ value: Number(batch.batch), label: batch.batch })))
         })
     }
 
@@ -68,6 +68,18 @@ const Settings = (): JSX.Element => {
         })
     }
 
+    const handleDelete = () => {
+        if (!route || !batch) {
+            return
+        }
+
+
+        service.postBatchDelete(route, batch).then(() => {
+            setRoute(undefined)
+            setBatch(undefined)
+        })
+    }
+
     const handleBackupError = (value: string, errorSetter: React.Dispatch<React.SetStateAction<number>>) => {
         errorSetter(0)
     }
@@ -83,7 +95,7 @@ const Settings = (): JSX.Element => {
                     Retire
                     <Tooltip className={s.tooltip}>Removes videos of POIs with no COVID violations. Batch number is removed from any future selections.</Tooltip>
                 </div>
-                <div className={s.button}>
+                <div className={s.button} onClick={handleDelete}>
                     Delete
                     <Tooltip className={s.tooltip}>
                         Completely removes POI and annotations (including videos).
@@ -96,7 +108,7 @@ const Settings = (): JSX.Element => {
                 <CustomInput containerClass={s.backupEnter} label='Backup name' errorHandler={{
                     errorMessages: backupError,
                     onError: handleBackupError
-                }}/>
+                }} />
                 <div className={s.button}>
                     Backup
                 </div>
@@ -104,9 +116,9 @@ const Settings = (): JSX.Element => {
         </Card>
         <Card className={s.backupControl} header={`Backup control`}>
             <div className={s.selectContainer}>
-            <Select menuPortalTarget={document.body} styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }} placeholder="Select backup..." key={`select-backup-settings`} options={[{value: 'auto1', label: 'auto1'}, {value: 'auto2', label: 'auto2'}, {value: 'auto3', label: 'auto3'}]} className={s.backupSelect} isSearchable={false}  />
+                <Select menuPortalTarget={document.body} styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }} placeholder="Select backup..." key={`select-backup-settings`} options={[{ value: 'auto1', label: 'auto1' }, { value: 'auto2', label: 'auto2' }, { value: 'auto3', label: 'auto3' }]} className={s.backupSelect} isSearchable={false} />
             </div>
-            
+
             <div className={s.buttonsContainer}>
                 <div className={s.button}>
                     Restore
@@ -124,15 +136,15 @@ const Settings = (): JSX.Element => {
                 <div className={s.button}>
                     Small Nuke
                     <Tooltip className={s.tooltip}>
-                        Deletes all annotations.    
+                        Deletes all annotations.
                     </Tooltip>
                 </div>
                 <div className={s.button}>
                     Greater Nuke
                     <Tooltip className={s.tooltip}>
-                        Deletes stops and annotations.    
+                        Deletes stops and annotations.
                     </Tooltip >
-                </div>    
+                </div>
             </div>
         </Card>
     </div>

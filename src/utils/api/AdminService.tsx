@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { DashboardStats, FileStops } from '../../types/Admin'
 
-import {BACKEND_API} from './endpoints'
+import { BACKEND_API } from './endpoints'
 
 
 
@@ -38,10 +38,10 @@ async function getTrackingData(route: string, batch: string | number) {
     const response = await axios.get(`${BACKEND_API}/process/tracking?route=${route}&batch=${batch}`)
 
     return response.data
-} 
+}
 
 async function getFileData(filename: string, route: string, batch: number | string): Promise<FileStops[]> {
-    const response =  await axios.get(`${BACKEND_API}/stops/file/${filename}/?route=${route}&batch=${batch}`)
+    const response = await axios.get(`${BACKEND_API}/stops/file/${filename}/?route=${route}&batch=${batch}`)
 
     return response.data
 }
@@ -63,6 +63,17 @@ async function postRetirement(route: string, batch: number) {
     return response.data
 }
 
+async function postBatchDelete(route: string, batch: number) {
+    const req = {
+        route: route,
+        batch: batch
+    }
+
+    const response = await axios.post(`${BACKEND_API}/batch/delete`, req)
+
+    return response.data
+}
+
 async function postDelete(source_file: string, route: string, batch: number, tracking: string | number) {
     const req = { source_file, route, batch, tracking }
 
@@ -71,4 +82,4 @@ async function postDelete(source_file: string, route: string, batch: number, tra
     return response.data
 }
 
-export const service = { getDashboardStats, getCodesInstrumentation, getHistogramData, getTrackingData, getFileData, postGenerateCodes, postRetirement, postDelete, getCSVData }
+export const service = { getDashboardStats, getCodesInstrumentation, getHistogramData, getTrackingData, getFileData, postGenerateCodes, postRetirement, postDelete, postBatchDelete, getCSVData }
