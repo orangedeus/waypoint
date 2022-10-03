@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import crypto from '../../../crypto-browserify'
 import { Buffer } from 'buffer'
 
 import { service } from '../../api/UploadService'
