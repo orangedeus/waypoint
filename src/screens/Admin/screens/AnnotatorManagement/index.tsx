@@ -23,7 +23,7 @@ import { useRecoilState } from 'recoil'
 import { authState } from '../../../../stores/auth'
 
 
-import {Bar} from 'react-chartjs-2'
+import { Bar } from 'react-chartjs-2'
 
 import Table from '../../components/Table'
 
@@ -141,7 +141,7 @@ const AnnotatorManagement = (): JSX.Element => {
         }
     }, [fail])
 
-    
+
 
     const handleRouteOpen = () => {
         getRoutesOptions().then((data) => {
@@ -149,31 +149,31 @@ const AnnotatorManagement = (): JSX.Element => {
         })
     }
 
-    const handleRouteSelect = (event: SingleValue<{value: number; label: string; }>) => {
+    const handleRouteSelect = (event: SingleValue<{ value: number; label: string; }>) => {
         setRoute(event?.label)
     }
 
-    const handleHistogramRouteSelect = (event: SingleValue<{value: number; label: string; }>) => {
+    const handleHistogramRouteSelect = (event: SingleValue<{ value: number; label: string; }>) => {
         setHistogramRoute(event?.label)
     }
 
     const handleBatchOpen = () => {
         getBatchOptions(route).then((data) => {
-            setBatches(data.map((batch: any) => ({value: batch.batch, label: batch.batch})))
+            setBatches(data.map((batch: any) => ({ value: batch.batch, label: batch.batch })))
         })
     }
 
-    const handleBatchSelect = (event: SingleValue<{value: string; label: string; }>) => {
+    const handleBatchSelect = (event: SingleValue<{ value: string; label: string; }>) => {
         setBatch(event?.label)
     }
 
     const handleHistogramBatchOpen = () => {
         getBatchOptions(String(histogramRoute)).then((data) => {
-            setBatches(data.map((batch: any) => ({value: batch.batch, label: batch.batch})))
+            setBatches(data.map((batch: any) => ({ value: batch.batch, label: batch.batch })))
         })
     }
 
-    const handleHistogramBatchSelect = (event: SingleValue<{value: string; label: string; }>) => {
+    const handleHistogramBatchSelect = (event: SingleValue<{ value: string; label: string; }>) => {
         setHistogramBatch(event?.label)
     }
 
@@ -222,8 +222,8 @@ const AnnotatorManagement = (): JSX.Element => {
             <div className={s.form}>
                 <Select className={s.select} placeholder="Select route..." options={routes} onMenuOpen={handleRouteOpen} onChange={handleRouteSelect} />
                 <Select className={s.select} placeholder="Select batch..." options={batches} onMenuOpen={handleBatchOpen} onChange={handleBatchSelect} />
-                <CustomInput containerClass={s.numberInput} id="number" value={noOfCodes} min={0} label='Number of codes' errorHandler={{onError: handleNumberError, errorMessages: NUMBER_ERRORS}} onChange={(event) => setNoOfCodes(Number(event.target.value))} />
-                <CustomInput containerClass={s.numberInput} id="threshold" value={threshold} min={0} label='Threshold' errorHandler={{onError: handleNumberError, errorMessages: NUMBER_ERRORS}} onChange={(event) => setThreshold(Number(event.target.value))} />
+                <CustomInput containerClass={s.numberInput} id="number" value={noOfCodes} min={0} label='Number of codes' errorHandler={{ onError: handleNumberError, errorMessages: NUMBER_ERRORS }} onChange={(event) => setNoOfCodes(Number(event.target.value))} />
+                <CustomInput containerClass={s.numberInput} id="threshold" value={threshold} min={0} label='Threshold' errorHandler={{ onError: handleNumberError, errorMessages: NUMBER_ERRORS }} onChange={(event) => setThreshold(Number(event.target.value))} />
                 <button className={cx(s.submit, {
                     [s.submitFail]: fail
                 })} onClick={handleSubmit}>Generate</button>
@@ -234,10 +234,10 @@ const AnnotatorManagement = (): JSX.Element => {
                 {generatedCodes.map((code) => {
                     return <div className={s.code}>{code}</div>
                 })}
-            </div>: <div className={s.codesPlaceholder}>
+            </div> : <div className={s.codesPlaceholder}>
                 Nothing to display.
             </div>}
-            
+
         </Card>
         <Card header="Annotator code monitoring" className={s.management}>
             {inst.length && <Table<CodeData> className={s.table} columns={[

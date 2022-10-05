@@ -1,4 +1,4 @@
-import React, {createContext, ReactNode, useEffect, useState} from 'react'
+import { createContext, ReactNode, useEffect, useState } from 'react'
 import FlashMessage, { FlashMessageProps } from '../components/FlashMessage'
 
 type FlashContextType = {
@@ -16,7 +16,7 @@ type FlashProviderProps = {
     timeout?: number
 }
 
-const FlashProvider = ({children, timeout = 4000}: FlashProviderProps): JSX.Element => {
+const FlashProvider = ({ children, timeout = 4000 }: FlashProviderProps): JSX.Element => {
 
     const [flash, setFlash] = useState<Partial<FlashMessageProps> | null>(null)
 
