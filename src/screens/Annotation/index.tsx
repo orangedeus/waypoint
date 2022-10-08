@@ -208,7 +208,7 @@ const Annotation = (): JSX.Element => {
             {(!admin && !surveyed) && <Landing />}
             <div className={s.container}>
                 <div className={s.videosContainer}>
-                    {videos.length && <Flicking
+                    {videos.length > 0 && <Flicking
                         ref={flickingRef}
                         moveType={[MOVE_TYPE.SNAP, { count: videos.length }]}
                         horizontal={false}
