@@ -7,8 +7,7 @@ import {
   RecoilRoot
 } from 'recoil'
 
-import { Buffer } from 'buffer'
-import crypto from 'crypto'
+import 'vite/modulepreload-polyfill'
 
 
 ReactDOM.render(
