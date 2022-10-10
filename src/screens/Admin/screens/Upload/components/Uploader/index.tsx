@@ -314,11 +314,7 @@ export default function Uploader() {
     }
 
     const handleCreateBatch = (e: any) => {
-        let req = {
-            route: route,
-            batch: e
-        }
-        routeService.postNewBatch(route, batch).then(data => {
+        routeService.postNewBatch(route, e).then(data => {
             if (data == 'ok') {
                 setBatch(e)
                 for (let upload of Uploads) {
