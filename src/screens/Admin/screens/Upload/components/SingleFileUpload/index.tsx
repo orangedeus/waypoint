@@ -13,6 +13,7 @@ import {
     buildRequest,
     uploadChunk
 } from '../../../../../../utils/methods/upload'
+import { PROCESSING_API } from '../../../../../../utils/api/endpoints'
 
 type SingleFileUploadProps = {
     file: any
@@ -24,10 +25,7 @@ type SingleFileUploadProps = {
 
 export type Status = 'uploading' | 'processing' | 'upload-problem' | 'uploaded' | 'ready' | 'no-route' | 'processed' | 'failed'
 
-const SingleFileUpload = ({file: fileProp, checked: checkedProp, status: statusProp, onClose}: SingleFileUploadProps, ref: React.ForwardedRef<any>) => {
-
-    const url = "http://13.251.37.189:3001"
-    const instance_url = "http://18.136.217.164:3001"
+const SingleFileUpload = ({ file: fileProp, checked: checkedProp, status: statusProp, onClose }: SingleFileUploadProps, ref: React.ForwardedRef<any>) => {
 
     const [progress, setProgress] = useState(0)
     const [file, setFile] = useState(fileProp)
@@ -157,7 +155,7 @@ const SingleFileUpload = ({file: fileProp, checked: checkedProp, status: statusP
         if (status == 'uploading') {
             return;
         }
-    
+
         let bytes, totalBytesSent: number
         service.getUploadStatus(file.name, route, batch).then(async (data) => {
             setStatus('uploading')
@@ -171,14 +169,14 @@ const SingleFileUpload = ({file: fileProp, checked: checkedProp, status: statusP
                 batch: batch,
                 tracking: tracking
             }
-    
+
             for (let i = bytes; i < file.size; i += CHUNK_SIZE) {
-                let {chunk: currChunk, checksum: currChecksum, chunkSize: currChunkSize} = await buildChunk(i, file)
-                let {formData, config} = buildRequest(currChunk, currChecksum, i, currChunkSize, totalBytesSent, fileData, (event: ProgressEvent) => {
+                let { chunk: currChunk, checksum: currChecksum, chunkSize: currChunkSize } = await buildChunk(i, file)
+                let { formData, config } = buildRequest(currChunk, currChecksum, i, currChunkSize, totalBytesSent, fileData, (event: ProgressEvent) => {
                     let tempProgress = Math.round((totalBytesSent + event.loaded) / (file.size) * 100)
                     setProgress(tempProgress)
                 })
-                await uploadChunk({formData, config})
+                await uploadChunk({ formData, config })
                 totalBytesSent += currChunkSize
             }
             setStatus('uploaded')
@@ -210,7 +208,7 @@ const SingleFileUpload = ({file: fileProp, checked: checkedProp, status: statusP
                 </div>
             )
         }
-        if (status =='uploading') {
+        if (status == 'uploading') {
             return (
                 <div className="UploadingStatusDisplay">
                     <Loader />
@@ -218,10 +216,10 @@ const SingleFileUpload = ({file: fileProp, checked: checkedProp, status: statusP
                 </div>
             )
         }
-        if (status =='uploaded') {
+        if (status == 'uploaded') {
             return (
                 <div className="ReadyStatusDisplay">
-                    <a href={`${url}/watch/${file.name}`} target="_blank" type="video/mp4"><img src="/assets/uploaded.png" className="StatusImages" /></a>
+                    <a href={`${PROCESSING_API}/watch/${file.name}`} target="_blank" type="video/mp4"><img src="/assets/uploaded.png" className="StatusImages" /></a>
                     <p className="ReadyLabel">Uploaded</p>
                 </div>
             )
@@ -273,7 +271,7 @@ const SingleFileUpload = ({file: fileProp, checked: checkedProp, status: statusP
 
     const handleBatchSelect = () => {
         getBatchOptions(route).then((data) => {
-            setBatches(data.map((batch: any) => ({value: batch.batch, label: batch.batch})))
+            setBatches(data.map((batch: any) => ({ value: batch.batch, label: batch.batch })))
         })
     }
 
@@ -281,22 +279,22 @@ const SingleFileUpload = ({file: fileProp, checked: checkedProp, status: statusP
         setBatch(e.value)
     }
 
-    const handleClose= () => {
+    const handleClose = () => {
         onClose(file.name)
     }
 
-    return(
+    return (
         <div className={s.singleFileUpload}>
             <button onClick={handleClose} className={s.close}>
                 ✕
             </button>
             <div className={s.uploadLabel}>
-                <input type="checkbox" id={`checkbox-${file.name}`} checked={checked} onChange={() => {setChecked((curr) => {return !curr})}} />
+                <input type="checkbox" id={`checkbox-${file.name}`} checked={checked} onChange={() => { setChecked((curr) => { return !curr }) }} />
                 <label htmlFor={`checkbox-${file.name}`}>
                     {file.name}
                 </label>
-                <Select className={s.select} key={`select-route-${file.name}`} placeholder="Select route" ref={selectRef} value={route == "" ? null : {value: -1, label: route}} options={routes} isSearchable={false} onMenuOpen={handleSelect} onChange={handleSelectChange} />
-                <Select className={s.select} key={`select-batch-${file.name}`} placeholder="Select batch" ref={selectBatchRef} value={batch == 0 ? null : {value: -1, label: batch}} options={batches} isSearchable={false} onMenuOpen={handleBatchSelect} onChange={handleBatchSelectChange} />
+                <Select className={s.select} key={`select-route-${file.name}`} placeholder="Select route" ref={selectRef} value={route == "" ? null : { value: -1, label: route }} options={routes} isSearchable={false} onMenuOpen={handleSelect} onChange={handleSelectChange} />
+                <Select className={s.select} key={`select-batch-${file.name}`} placeholder="Select batch" ref={selectBatchRef} value={batch == 0 ? null : { value: -1, label: batch }} options={batches} isSearchable={false} onMenuOpen={handleBatchSelect} onChange={handleBatchSelectChange} />
             </div>
             <div className="StatusDisplay">
                 {getStatusDisplay()}

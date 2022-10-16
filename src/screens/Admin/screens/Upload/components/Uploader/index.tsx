@@ -16,6 +16,7 @@ import { service as processService } from '../../../../../../utils/api/ProcessSe
 
 
 import SingleFileUpload, { Status } from '../SingleFileUpload'
+import { BACKEND_API } from '../../../../../../utils/api/endpoints';
 
 function useStateCallback(initialState: any) {
     const [state, setState] = useState(initialState)
@@ -92,8 +93,6 @@ type UploadElement = {
 }
 
 export default function Uploader() {
-    const url = "http://13.251.37.189:3001"
-    const instance_url = "http://18.136.217.164:3001"
 
     const [files, setFiles] = useStateCallback([])
     const [route, setRoute] = useState<string>('')
@@ -338,7 +337,7 @@ export default function Uploader() {
 
     return (
         <div className={s.container}>
-            <Dropzone files={files} instance_url={instance_url} instance={instance} passFiles={getFiles} passInstance={(bool) => { setInstance(bool) }} />
+            <Dropzone files={files} instance_url={BACKEND_API} instance={instance} passFiles={getFiles} passInstance={(bool) => { setInstance(bool) }} />
             <div className={s.uploadInterface}>
                 <div className={s.uploadControl}>
                     <span className={s.button} onClick={(e) => handleSelectAll(e)} >
